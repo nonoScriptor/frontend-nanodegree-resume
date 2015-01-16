@@ -1,12 +1,14 @@
 var bio = {
 	"name" : "Arnaud Brun",
-	"age": "21",
-	"location" : "Nancy",
+	"age": "21",	
 	"role": "Ingenieur en Informatique (Master of Science in the IT)",
-	"mobile" : "06 30 30 11 68",
-	"email" : "arnaud.brun.vidal@gmail.com",
-	"github" : "nonoScriptor",
-	"picture" : "C:/Travail/Telecom Nancy/2A/Prog_Web/javascript/frontend-nanodegree-resume/imagesfry.jpeg",
+	"contacts" : {
+		"location" : "Nancy",
+		"mobile" : "06 30 30 11 68",
+		"email" : "arnaud.brun.vidal@gmail.com",
+		"github" : "nonoScriptor"
+	},
+	"picture" : "images/autobahn.jpg",
 	"welcome" : "Hi bitches ! Thank's to visit my virtual Resume !!",
 	"skills": ["Developpment", "Design", "Analysis"]	
 };
@@ -67,7 +69,6 @@ var project = {
 };
 
 project.display = function(){
-
 	for (idx in project.projects){
 		$("#projects").append(HTMLprojectStart);		
 		
@@ -81,24 +82,23 @@ project.display = function(){
 	}
 };
 
-
 var education = {
 	"schools" : [
 		{
 			"name" : "Telecom Nancy",
-			"city" : "Villers-les-Nancy",
+			"location" : "Villers-les-Nancy",
 			"degree" : "Ingenieur equivalent to Master of Science in the IT",
 			"major" : ["MOCI", "System-Network"]
 		},
 		{
 			"name" : "Intitut Universitaire Technologique",
-			"city" : "Metz",
+			"location" : "Metz",
 			"degree" : "DUT : Diplome Universitaire de Technologies equivalent to an IT Licence ",
 			"major" : ["Algorithm", "German", "Mathematics Analysis"]
 		},
 		{
 			"name" : "Lycee Georges de La Tour",
-			"city" : "Metz",
+			"location" : "Metz",
 			"degree" : "Baccalauréat : A-level in Science",
 			"major" : ["German", "Biology"]
 		}
@@ -114,28 +114,39 @@ var education = {
 };
 
 
-function displayContact(){
+function displayHeader(){
 
-	var contactZone = HTMLcontactGeneric.replace("%contact%", "To contact me :");
+
+	var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
+	var formattedName = HTMLheaderName.replace("%data%", bio.name);
+	var formattedPic = HTMLbioPic.replace("%data%", bio.picture);
+	$("#header").append(formattedPic);
+	$("#header").prepend(formattedRole);
+	$("#header").prepend(formattedName);
+	
+
+	var contactZone = HTMLcontactGeneric.replace("%contact%", "Contact Information : ");
 	contactZone = contactZone.replace("%data%", "");
-	$("#topContacts").append(contactZone);
 
-	var formattedMobile = HTMLmobile.replace("%data%", bio.mobile);
-	var formattedEmail = HTMLemail.replace("%data%", bio.email);
+	var formattedMobile = HTMLmobile.replace("%data%", bio.contacts.mobile);
+	var formattedEmail = HTMLemail.replace("%data%", bio.contacts.email);
 	var formattedGit = HTMLgithub.replace("%data%", bio.github);
-	var formattedLoc = HTMLlocation.replace("%data%", bio.location);
+	var formattedLoc = HTMLlocation.replace("%data%", bio.contacts.location);
 	var formattedWelcomMsg = HTMLWelcomeMsg.replace("%data%", bio.welcome);
-	var formattedPic = HTMLbioPic.replace("\"%data%\"", bio.picture);
+	
 	console.log(bio.picture);
 	console.log(formattedPic);
 
-
-	$(".flex-item:last").append(formattedMobile);
-	$(".flex-item:last").append(formattedEmail);
-	$(".flex-item:last").append(formattedGit);
-	$(".flex-item:last").append(formattedLoc);
-	//$(".flex-item:last").append(formattedPic);
-	$("#topContacts").append(formattedWelcomMsg);
+	$("#topContacts").append(contactZone);
+	
+	$("#topContacts").append(formattedMobile);
+	$("#topContacts").append(formattedEmail);
+	$("#topContacts").append(formattedGit);
+	$("#topContacts").append(formattedLoc);
+	
+	$("#header").append(formattedWelcomMsg);
+	
+	
 }
 
 
@@ -164,7 +175,7 @@ function displayEducation(){
 
 		var formattedName = HTMLschoolName.replace("%data%", education.schools[school].name);		
 		var formattedDegree = HTMLschoolDegree.replace("%data%", education.schools[school].degree);
-		var formattedCity = HTMLschoolLocation.replace("%data%", education.schools[school].city);
+		var formattedCity = HTMLschoolLocation.replace("%data%", education.schools[school].location);
 		var formattedMajor = HTMLschoolMajor.replace("%data%", education.schools[school].major);
 
 		$(".education-entry:last").append(formattedName+formattedDegree);
@@ -192,6 +203,20 @@ function displayOnlines(){
 	}
 }
 
+function displayFooter(){
+
+
+	var formattedMobile = HTMLmobile.replace("%data%", bio.contacts.mobile);
+	var formattedEmail = HTMLemail.replace("%data%", bio.contacts.email);
+	var formattedGit = HTMLgithub.replace("%data%", bio.github);
+	var formattedLoc = HTMLlocation.replace("%data%", bio.contacts.location);
+
+	$("#footerContacts").append(formattedMobile);
+	$("#footerContacts").append(formattedEmail);
+	$("#footerContacts").append(formattedGit);
+	$("#footerContacts").append(formattedLoc);	
+}
+
 
 
 $("#main").append(internationalizeButton);
@@ -207,22 +232,16 @@ function inName(){
 }
 
 
-if(bio.name.length > 0){
-	var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
-	$("#header").prepend(formattedRole);
-}
-
-
-if(bio.role.length > 0){
-	var formattedName = HTMLheaderName.replace("%data%", bio.name);
-	$("#header").prepend(formattedName);
-}
-
-
-displayContact();
+displayHeader();
 displayWork();
 project.display();
 
 displayEducation();
 displayOnlines();
+displayFooter();
+
+
+$("#mapDiv").append(googleMap);
+
+
 
